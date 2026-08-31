@@ -1,0 +1,83 @@
+========================================================================
+GUÍA DE CONFIGURACIÓN SUPABASE - FRONTEND
+========================================================================
+
+1. ARCHIVO DE VARIABLES DE ENTORNO (.env)
+------------------------------------------------------------------------
+Crea un archivo llamado ".env" (o ".env.local") en la raíz de tu 
+proyecto y agrega las siguientes variables. 
+
+⚠️ IMPORTANTE: Asegúrate de que este archivo esté en tu ".gitignore" 
+para NUNCA subirlo a GitHub.
+
+NEXT_PUBLIC_SUPABASE_URL=<PEGA_AQUI_TU_SUPABASE_URL>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<PEGA_AQUI_TU_ANON_KEY>
+
+NOTA DE SEGURIDAD:
+- La "ANON KEY" es segura para usar en el frontend.
+- NUNCA uses la "SERVICE_ROLE_KEY" en el frontend. Esta clave solo 
+  debe usarse en el backend (servidores, Edge Functions) porque 
+  omite todas las reglas de seguridad (RLS).
+
+
+2. CÓMO OBTENER TUS CREDENCIALES
+------------------------------------------------------------------------
+1. Inicia sesión en tu panel de Supabase.
+2. Selecciona tu proyecto.
+3. Ve al menú lateral inferior y haz clic en el ícono de engranaje 
+   (Settings / Configuración).
+4. Selecciona la opción "API".
+5. Copia los valores de "Project URL" y "anon public" y pégalos 
+   en tu archivo .env.
+
+
+3. ESQUEMA DE BASE DE DATOS (Tabla: posts)
+------------------------------------------------------------------------
+Tabla: public.posts
+Columnas:
+  - id         : uuid (Primary Key)
+  - created_at : timestamp (Fecha de creación)
+  - "user"     : text (Nota: lleva comillas dobles en SQL porque 
+             "user" es una palabra reservada en PostgreSQL).
+  - img_id     : text (Guarda la ruta relativa de la imagen, 
+             ej: 'carpeta/archivo.jpg')
+
+
+4. CONFIGURACIÓN DE STORAGE (Imágenes)
+------------------------------------------------------------------------
+Para mostrar las imágenes en tu frontend, construye la URL 
+dinámicamente usando tus variables de entorno. No hardcodees 
+el ID del proyecto.
+
+Ejemplo de lógica en JavaScript/TypeScript:
+const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/<NOMBRE_DE_TU_BUCKET>/${post.img_id}`
+
+Requisitos del Bucket:
+- Asegúrate de que el bucket esté configurado como "Public" en 
+  el panel de Supabase (Storage > Buckets > Editar).
+
+
+5. INSTALACIÓN DE DEPENDENCIAS
+------------------------------------------------------------------------
+Ejecuta el siguiente comando en tu terminal para instalar el 
+cliente oficial de Supabase:
+
+npm install @supabase/supabase-js
+# o
+yarn add @supabase/supabase-js
+# o
+pnpm add @supabase/supabase-js
+
+
+6. INICIALIZACIÓN DEL CLIENTE (Ejemplo básico)
+------------------------------------------------------------------------
+Crea un archivo (ej. lib/supabase.js) para inicializar la conexión:
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+========================================================================
