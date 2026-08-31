@@ -2,8 +2,12 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
+
+//Importar los clientes de supabase
 import { supabase } from "../utils/client";
 
+
+console.log("Supabase funcionando y renderizando")
 export default function CreatePage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -32,6 +36,8 @@ export default function CreatePage() {
     }
   };
 
+
+  console.log("Obtener los post")
   const uploadAndCreatePost = async (file: File) => {
     const userId = "11111111-1111-1111-1111-111111111111";
 

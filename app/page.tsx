@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getTimeAgo } from "./utils/time";
-import { type Post } from "./mocks/posts";
+import { type Post } from "./types/post";
+import Comments from "./components/Comments";
 
 import { supabase } from "./utils/client";
 
@@ -53,7 +54,7 @@ function PostCard({
           <Image
             src={
               post.user?.avatar ||
-              "https://xynshcnkxdliapebmyaz.supabase.co/storage/v1/object/public/images/posts/unnamed-14.jpg"
+              "https://hmpywrtkkqlugudaeawj.supabase.co/storage/v1/object/public/bucket-supabase/posts/profile.png"
             }
             alt={post.user?.username || "default_user"}
             fill
@@ -103,6 +104,11 @@ function PostCard({
           </span>{" "}
           <span className="text-foreground/80">{post.caption}</span>
         </p>
+
+        {/* Comentarios */}
+        <div className="mt-3">
+          <Comments postId={post.id} />
+        </div>
       </div>
     </article>
   );
@@ -147,8 +153,8 @@ export default function Home() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-card-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Suplatzigram
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent tracking-tight">
+            Supagram
           </h1>
         </div>
       </header>

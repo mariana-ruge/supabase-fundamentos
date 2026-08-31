@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getTimeAgo } from "../utils/time";
-import { type Post } from "../mocks/posts";
+import { type Post } from "../types/post";
 
 import { supabase } from "../utils/client";
 
@@ -62,7 +62,7 @@ function Modal({
         <div className="flex items-center gap-3 p-4 border-b border-border">
           <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary">
             <Image
-              src={post.user?.avatar || "https://xynshcnkxdliapebmyaz.supabase.co/storage/v1/object/public/images/posts/unnamed-14.jpg"}
+              src={post.user?.avatar || "https://hmpywrtkkqlugudaeawj.supabase.co/storage/v1/object/public/bucket-supabase/posts/profile.png"}
               alt={post.user?.username || "default_user"}
               fill
               className="object-cover"
